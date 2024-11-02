@@ -1,8 +1,13 @@
 const express = require('express');
-const { createCanvas, loadImage } = require('canvas');
+const { createCanvas } = require('canvas');
 const axios = require('axios');
 const app = express();
 const port = process.env.PORT || 3000;
+
+// 处理根路径的请求
+app.get('/', (req, res) => {
+    res.send('欢迎使用图像生成服务！请访问 /image 来生成图像。');
+});
 
 app.get('/image', async (req, res) => {
     const ip = req.ip.replace('::ffff:', ''); // 获取用户IP
