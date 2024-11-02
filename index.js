@@ -10,13 +10,13 @@ app.get('/', (req, res) => {
 });
 
 app.get('/image', async (req, res) => {
-    const ip = req.ip.replace('::ffff:', ''); // 获取用户IP
+    const ip = req.ip.replace('::ffff:', ''); // 获取用户的IP
     const userAgent = req.headers['user-agent']; // 获取用户代理
     const browser = getBrowser(userAgent); // 获取浏览器信息
     const os = getOS(userAgent); // 获取操作系统信息
 
     let location = '未知省份-未知城市';
-    
+
     // 获取用户位置信息
     try {
         const response = await axios.get(`https://api.suyanw.cn/api/ipxx.php?ip=${ip}`);
@@ -37,9 +37,9 @@ app.get('/image', async (req, res) => {
     ctx.fillStyle = '#ffffff';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // 设置字体颜色和字体
+    // 设置字体颜色和字体（使用默认无衬线字体）
     ctx.fillStyle = '#ff0000';
-    ctx.font = '20px "微软雅黑"';
+    ctx.font = '20px sans-serif'; // 使用无衬线字体
 
     // 绘制文本
     const weekDays = ['日', '一', '二', '三', '四', '五', '六'];
@@ -58,6 +58,7 @@ app.get('/image', async (req, res) => {
     res.setHeader('Content-Type', 'image/png');
     canvas.toBuffer((err, buffer) => {
         if (err) {
+            console.error(err);
             return res.status(500).send('图像生成失败');
         }
         res.send(buffer);
